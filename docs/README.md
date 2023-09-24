@@ -6,6 +6,6 @@ These masks are obtained by predicting the class of each pixel in the image. Thi
 
 In this proof-of-concept, this is done using a UNet, which is a form of CNN. It downsamples the image then upsamples it back to its original size, allowing the model to preserve important details of the image. 
 #### SegmentPage.py
-The main purpose of this file is to provide the ability to differentiate lines on a multi-line text document. These cropped lines can then be used to do text recognition later on with smaller samples. For instance, an output image:![[Pasted image 20230920000615.png]]
+The main purpose of this file is to provide the ability to differentiate lines on a multi-line text document. These cropped lines can then be used to do text recognition later on with smaller samples. 
 
 This uses `cv2` and `tensorflow`. In this proof-of-concept, this is done using a UNet, which is a form of CNN. It downsamples the image then upsamples it back to its original size, allowing the model to preserve important details of the image. 

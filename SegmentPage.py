@@ -103,4 +103,32 @@ line_img_array = []
 
 def segment_to_line(filename):
     img = cv2.imread(f'{filename}', 0)
+    ret, img = cv2.threshold(img, 150, 255, cv2.THRESH_BINARY_INV)
+    img = cv2.resize(img, (512, 512))
+    img = np.expand_dims(img, axis = -1)
+    img = np.expand_dims(img, axis = 0)
+    pred = model.predict(img)
+    pred = np.squeeze(np.squeeze(pred, axis = 0), axis = -1)
     
+    coordinates = []
+    img = cv2.normalize(src = pred, dst = None, alpha = 0, beta = 255, norm_type = cv2.NORM_MINMAX, dtype = cv2.CV_8UC1)
+    cv2.threshold(img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU, img)
+    original_img = cv2.imread(f'{filename}', 0)
+    
+    (H, W) = original_img.shape[:2]
+    (newW, newH) = (512, 512)
+    rW = W / float(newW)
+    rH = H / float(newH)
+    
+    contours, hier = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+    
+    for c in contours:
+        x, y, w, h = cv2.boundingRect(c)
+        coordinates.append((int(x * rW), int(y * rH), int((x + w) * rW), int((y + h) * rH)))
+        
+    for i in range(len(coordinates) - 1, -1, -1):
+        coords = coordinates[i]
+        p_img = original_img[coords[1]:coords[3], coords[0]:coords[2]].copy()
+        line_img_array.append(p_img)
+            
+    return line_img_array
