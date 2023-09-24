@@ -1,3 +1,5 @@
-/venv
+/env1
 /data
+/data2
+/model
 *.h5

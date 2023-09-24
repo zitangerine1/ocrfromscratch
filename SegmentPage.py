@@ -8,7 +8,7 @@ import cv2
 import os
 import random
 
-image_list = os.listdir('/home/couch/code/ocr/data/PageSegData/PageImg')
+image_list = os.listdir('/home/couch/Documents/GitHub/ocrfromscratch-WIP/data/PageSegData/PageImg')
 image_list = [filename.split('.')[0] for filename in image_list]
 
 def get_seg_img(img, n_classes):
@@ -26,14 +26,14 @@ def batch_generator(file_list, batch_size, n_classes):
         
         for i in range(batch_size):
             fn = random.choice(file_list)
-            img = cv2.imread(f'/home/couch/code/ocr/data/PageSegData/PageImg/{fn}.JPG', 0)
+            img = cv2.imread(f'/home/couch/Documents/GitHub/ocrfromscratch-WIP/data/PageSegData/PageImg/{fn}.JPG', 0)
             ret, img = cv2.threshold(img, 150, 255, cv2.THRESH_BINARY_INV)
             # Inverse binary thresholding
             img = cv2.resize(img, (512, 512))
             img = np.expand_dims(img, axis = -1)
             img = img / 255
             
-            seg = cv2.imread(f'/home/couch/code/ocr/data/PageSegData/PageSeg/{fn}_mask.png', 1)
+            seg = cv2.imread(f'/home/couch/Documents/GitHub/ocrfromscratch-WIP/data/PageSegData/PageSeg/{fn}_mask.png', 1)
             seg = get_seg_img(seg, n_classes)
             
             x.append(img)
@@ -95,14 +95,12 @@ def unet(pretrained_weights = None, input_size = (512, 512, 1)):
     return model
         
 model = unet()
-model.save('model.h5')
-# model.summary()
+model.load_weights('/home/couch/Documents/GitHub/ocrfromscratch-WIP/model/model.h5')
 
-from keras.callbacks import ModelCheckpoint
+# model.fit_generator(batch_generator(file_train, 2, 2), steps_per_epoch=1000, epochs=3, callbacks=[mc], validation_data=batch_generator(file_test, 2, 2), validation_steps=400, shuffle=1)
 
-random.shuffle(image_list)
-file_train = image_list[0:int(len(image_list) * 0.8)]
-file_test = image_list[int(len(image_list) * 0.8):]
+line_img_array = []
 
-mc = ModelCheckpoint('weights{epoch:08d}.h5', save_weights_only=True, period=1)
-model.fit_generator(batch_generator(file_train, 2, 2), steps_per_epoch=1000, epochs=3, callbacks=[mc], validation_data=batch_generator(file_test, 2, 2), validation_steps=400, shuffle=1)
+def segment_to_line(filename):
+    img = cv2.imread(f'{filename}', 0)
+    
