@@ -15,7 +15,7 @@ def get_seg_img(img, n_classes):
     seg_labels = np.zeros((512, 512, n_classes))
     img = cv2.resize(img, (512, 512))
     img = img[:, :, 0]
-    cl_list = [0, 24]
+    # cl_list = [0, 24]
     seg_labels[:, :, 0] = (img != 0).astype(int)
     return seg_labels
 
