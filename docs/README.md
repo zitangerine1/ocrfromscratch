@@ -1,3 +1,5 @@
+# Hmm... What's This?
+
 This is a OCR - optical character recognition engine built on Python. It has the capability to input an entire multi-line text document and separate line-from-line. 
 
 This program has (TBD) main components:
