@@ -95,7 +95,7 @@ def unet(pretrained_weights = None, input_size = (512, 512, 1)):
     return model
         
 model = unet()
-model.load_weights('/home/couch/Documents/GitHub/ocrfromscratch-WIP/model/model.h5')
+model.load_weights('/home/couch/Documents/GitHub/ocrfromscratch-WIP/model/text_seg_model.h5')
 
 # model.fit_generator(batch_generator(file_train, 2, 2), steps_per_epoch=1000, epochs=3, callbacks=[mc], validation_data=batch_generator(file_test, 2, 2), validation_steps=400, shuffle=1)
 

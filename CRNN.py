@@ -73,7 +73,7 @@ valid_orig_txt = []
 
 max_label_len = 0
 
-annotations = open('/home/couch/Documents/GitHub/ocrfromscratch-WIP/Data-generator-for-CRNN/annotation.txt').readlines()
+annotations = open('/home/couch/Documents/GitHub/ocrfromscratch-WIP/generatedData/annotation.txt').readlines()
 imagenames = []
 texts = []
 
@@ -87,7 +87,7 @@ random.shuffle(c)
 imagenames, texts = zip(*c)
 
 for i in range(len(imagenames)):
-    img = cv2.imread('/home/couch/Documents/GitHub/ocrfromscratch-WIP/Data-generator-for-CRNN/images/' + imagenames[i], 0)
+    img = cv2.imread('/home/couch/Documents/GitHub/ocrfromscratch-WIP/generatedData/images/' + imagenames[i], 0)
     img = preprocess(img, (128, 32))
     img = np.expand_dims(img , axis = -1)
     img = img / 255
@@ -143,8 +143,8 @@ conv_7 = Conv2D(512, (2, 2), activation = 'relu')(pool_6)
 
 squeezed = Lambda(lambda x: K.squeeze(x, 1))(conv_7)
 
-blstm_1 = Bidirectional(LSTM(256, return_sequences = True, dropout = 0.2))(squeezed)
-blstm_2 = Bidirectional(LSTM(256, return_sequences = True, dropout = 0.2))(blstm_1)
+blstm_1 = Bidirectional(LSTM(128, return_sequences = True, dropout = 0.2))(squeezed)
+blstm_2 = Bidirectional(LSTM(128, return_sequences = True, dropout = 0.2))(blstm_1)
 
 outputs = Dense(len(charlist) + 1, activation = 'softmax')(blstm_2)
 
@@ -180,3 +180,4 @@ batch_size = 256
 epochs = 15
 
 model.fit(x = [training_img, train_padded_text, train_input_length, train_label_length], y = np.zeros(len(training_img)), batch_size = batch_size, epochs = epochs, validation_data = ([valid_img, valid_padded_text, valid_input_length, valid_label_length], [np.zeros(len(valid_img))]), verbose = 1, callbacks = callbacks_list)
+
