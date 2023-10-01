@@ -166,3 +166,5 @@ cython_debug/
 *.h5
 /generatedData
 /livetest
+ocrfromscratch-WIP
+*.code-workspace

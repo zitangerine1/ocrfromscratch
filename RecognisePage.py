@@ -3,7 +3,7 @@ from SegmentPage import segment_to_line
 from SegmentLine import segment_to_words
 from RecogniseWord import recognize_words
 
-line_img_array = segment_to_line('/home/couch/Documents/GitHub/ocrfromscratch-WIP/data2/img/lineA2.jpg')
+line_img_array = segment_to_line('/home/couch/Documents/GitHub/ocrfromscratch-WIP/livetest/1_PECLqzgGmIIMkjHX_Y9GqQ.webp')
 
 full_index_indicator = []
 all_words_list = []
